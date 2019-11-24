@@ -18,19 +18,11 @@
     </el-header>
     <el-container>
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-        <el-menu :default-openeds="['2']" default-active="1">
-          <el-menu-item index="1" v-model="menuItemName">
+        <el-menu default-active='0' v-for="(menuItemName, menuItemIndex) in menuItemNames" :key="menuItemIndex">
+          <el-menu-item index="menuItemIndex">
             <i class="el-icon-menu"></i>
-            <span slot="title" @click="addTab(menuItemName)">{{menuItemName}}</span>
+            <span slot="title" @click="addTab(menuItemName, menuItemIndex)">{{menuItemName}}</span>
           </el-menu-item>
-          <el-submenu index="2">
-            <template slot="title"><i class="el-icon-menu"></i>账单</template>
-            <el-menu-item-group>
-              <template slot="title">贷款</template>
-              <el-menu-item index="2-1">房贷</el-menu-item>
-              <el-menu-item index="2-2">消费贷</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
         </el-menu>
       </el-aside>
       <el-main>
@@ -87,31 +79,26 @@
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
           <el-table-column
-              prop="name"
-              label="姓名"
+              prop="account_name"
+              label="账户"
               width="120"
               sortable>
           </el-table-column>
           <el-table-column
-              prop="province"
-              label="省份"
+              prop="product_name"
+              label="产品"
               width="120">
           </el-table-column>
           <el-table-column
-              prop="city"
-              label="市区"
+              prop="account_type"
+              label="账户类型"
               width="120">
           </el-table-column>
           <el-table-column
-              prop="address"
-              label="地址"
+              prop="payment"
+              label="收支"
               width="300"
               show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
-              prop="zip"
-              label="邮编"
-              width="120">
           </el-table-column>
           <el-table-column
               fixed="right"
@@ -127,7 +114,7 @@
         <el-pagination
             background
             layout="prev, pager, next"
-            :total="23" style="text-align:right">
+            :total="totalCount" style="text-align:right">
         </el-pagination>
       </el-main>
     </el-container>
@@ -138,63 +125,9 @@
   export default {
     data() {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎2',
-          address: '上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎4',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎2',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎4',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎2',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎4',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
+        tableData: [],
         editableTabsValue: '1',
-        menuItemName: '概览',
-        editableTabs: [{
-          title: '概览',
-          name: '1',
-          content: 'Tab 1 content'
-        }],
-        tabIndex: 2,
+        menuItemNames: ['收支表','收支类型表','账户信息表','产品信息表'],
         multipleSelection: [],
         options: [{
           value: '1',
@@ -206,28 +139,37 @@
           value: '3',
           label: 'JavaScript'
         }],
-        value: []
+        value: [],
+        editableTabs: []
       };
     },
+    computed: {
+      totalCount() {
+        return this.tableData.length;
+      }
+    },
+    mounted() {
+      this.init();
+    },
     methods: {
-      addTab(targetName) {
+      addTab(targetName, index) {
+        console.log("index=" + index);
         let exist = false;
         this.editableTabs.forEach((editableTab) => {
-            if (editableTab.title === targetName) {
-              exist = true;
+              if (editableTab.title === targetName) {
+                exist = true;
+              }
             }
-          }
         );
         if (exist) {
           return;
         }
-        let newTabName = ++this.tabIndex + '';
         this.editableTabs.push({
           title: targetName,
-          name: newTabName,
+          name: targetName,
           content: 'New Tab content'
         });
-        this.editableTabsValue = newTabName;
+        this.editableTabsValue = targetName;
       },
       removeTab(targetName) {
         let tabs = this.editableTabs;
@@ -261,6 +203,14 @@
       handleSelectionChange(val) {
         this.multipleSelection = val;
         console.log(this.multipleSelection);
+      },
+      init() {
+        this.tableData = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
+        this.editableTabs.push({
+          title: this.menuItemNames[0],
+          name: '1',
+          content: 'Tab 1 content'
+        })
       }
     }
   };
