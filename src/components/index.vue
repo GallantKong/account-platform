@@ -18,11 +18,13 @@
     </el-header>
     <el-container>
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-        <el-menu default-active='0' v-for="(menuItemName, menuItemIndex) in menuItemNames" :key="menuItemIndex">
-          <el-menu-item index="menuItemIndex">
+        <el-menu :default-active="menuItemActiveIndex" v-for="(menuItem, menuItemIndex) in menuItems" :key="menuItemIndex">
+          <router-link :to="menuItem.path">
+          <el-menu-item :index="menuItemIndex">
             <i class="el-icon-menu"></i>
-            <span slot="title" @click="addTab(menuItemName, menuItemIndex)">{{menuItemName}}</span>
+            <span slot="title" @click="addTab(menuItem, menuItemIndex)">{{menuItem.title}}</span>
           </el-menu-item>
+          </router-link>
         </el-menu>
       </el-aside>
       <el-main>
@@ -127,7 +129,23 @@
       return {
         tableData: [],
         editableTabsValue: '1',
-        menuItemNames: ['收支表','收支类型表','账户信息表','产品信息表'],
+        menuItems: [{
+          title: '收支表',
+          name: 'fund_order',
+          path: '/'
+        },{
+          title: '收支类型表',
+          name: 'fund_type',
+          path: '/fund_type'
+        },{
+          title: '账户信息表',
+          name: 'account_info',
+          path: '/account_info'
+      },{
+          title: '产品信息表',
+          name: 'product_info',
+          path: '/product_info'
+      }],
         multipleSelection: [],
         options: [{
           value: '1',
@@ -140,7 +158,8 @@
           label: 'JavaScript'
         }],
         value: [],
-        editableTabs: []
+        editableTabs: [],
+        menuItemActiveIndex: 0
       };
     },
     computed: {
@@ -152,8 +171,10 @@
       this.init();
     },
     methods: {
-      addTab(targetName, index) {
+      addTab(targetItem, index) {
+        let targetName = targetItem.title;
         console.log("index=" + index);
+        this.menuItemActiveIndex = index;
         let exist = false;
         this.editableTabs.forEach((editableTab) => {
               if (editableTab.title === targetName) {
@@ -206,11 +227,7 @@
       },
       init() {
         this.tableData = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
-        this.editableTabs.push({
-          title: this.menuItemNames[0],
-          name: '1',
-          content: 'Tab 1 content'
-        })
+        this.editableTabs.push(this.menuItems[0])
       }
     }
   };
@@ -224,5 +241,9 @@
 
   .el-aside {
     color: #333;
+  }
+
+  .router-link-active {
+    text-decoration: none;
   }
 </style>
