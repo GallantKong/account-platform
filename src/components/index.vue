@@ -243,6 +243,10 @@
     color: #333;
   }
 
+  a {
+    text-decoration: none;
+  }
+
   .router-link-active {
     text-decoration: none;
   }
