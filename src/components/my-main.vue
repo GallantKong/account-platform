@@ -149,6 +149,7 @@
               if (nextTab) {
                 activeName = nextTab.name;
                 activeTab = nextTab
+                this.$router.push(activeTab.path);
               }
             }
           });
@@ -158,6 +159,7 @@
         if (activeTab == null) {
           this.editableTabs.forEach((tab) => {
             if (tab.name === this.editableTabsValue) {
+              console.log("found tab:"+tab.name+","+tab.path);
               activeTab = tab
             }
           });
@@ -166,8 +168,16 @@
         this.$emit("returnActiveTab", activeTab);
       },
       tabClick(tab, event) {
-        console.log("activeName:"+tab.name+",event:"+event);
-        this.$emit("returnActiveTab", tab);
+        console.log("activeName:"+tab.name+",event:"+event+",tab.path:"+tab.path);
+        let activeTab;
+        this.editableTabs.forEach((tab) => {
+          if (tab.name === this.editableTabsValue) {
+            console.log("found tab:"+tab.name+","+tab.path);
+            activeTab = tab
+            this.$router.push(activeTab.path);
+          }
+        });
+        this.$emit("returnActiveTab", activeTab);
       },
       queryDetail(row) {
         console.log(row);
