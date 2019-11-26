@@ -8,7 +8,7 @@
         <myAside ref="myAside" v-on:selectItem="selectItemFromChild"></myAside>
       </el-aside>
       <el-main>
-        <myMain ref="myMain" v-on:removeTab="removeTabFromChild"></myMain>
+        <myMain ref="myMain" v-on:returnActiveTab="returnActiveTabFromChild"></myMain>
       </el-main>
     </el-container>
   </el-container>
@@ -30,8 +30,8 @@
         console.log("selectItemFromChild:"+tab);
         this.$refs.myMain.selectItemFromParent(tab);
       },
-      removeTabFromChild(tab) {
-        console.log("removeTabFromChild:"+tab);
+      returnActiveTabFromChild(tab) {
+        console.log("returnActiveTabFromChild:"+tab);
         this.$refs.myAside.selectItem(tab);
       }
     }

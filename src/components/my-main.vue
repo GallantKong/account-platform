@@ -2,7 +2,7 @@
   <div>
     <div style="margin-bottom: 1px;">
     </div>
-    <el-tabs v-model="editableTabsValue" :active-name="editableTabsValue" type="card" closable @tab-remove="removeTab">
+    <el-tabs v-model="editableTabsValue" :active-name="editableTabsValue" type="card" closable @tab-remove="removeTab" v-on:tab-click="tabClick">
       <el-tab-pane
           v-for="(item) in editableTabs"
           :key="item.name"
@@ -153,10 +153,21 @@
             }
           });
         }
-
         this.editableTabsValue = activeName;
         this.editableTabs = tabs.filter(tab => tab.name !== targetName);
-        this.$emit("removeTab", activeTab);
+        if (activeTab == null) {
+          this.editableTabs.forEach((tab) => {
+            if (tab.name === this.editableTabsValue) {
+              activeTab = tab
+            }
+          });
+        }
+        console.log("targetName:"+targetName+",activeName:"+activeName+",activeTab:"+activeTab);
+        this.$emit("returnActiveTab", activeTab);
+      },
+      tabClick(tab, event) {
+        console.log("activeName:"+tab.name+",event:"+event);
+        this.$emit("returnActiveTab", tab);
       },
       queryDetail(row) {
         console.log(row);
