@@ -5,10 +5,10 @@
     </el-header>
     <el-container>
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-        <myAside v-on:addTab="addTabFromChild"></myAside>
+        <myAside ref="myAside" v-on:selectItem="selectItemFromChild"></myAside>
       </el-aside>
       <el-main>
-        <myMain ref="myMain"></myMain>
+        <myMain ref="myMain" v-on:removeTab="removeTabFromChild"></myMain>
       </el-main>
     </el-container>
   </el-container>
@@ -26,9 +26,13 @@
       myMain
     },
     methods: {
-      addTabFromChild(tab) {
-        console.log(tab);
-        this.$refs.myMain.addTabFromParent(tab);
+      selectItemFromChild(tab) {
+        console.log("selectItemFromChild:"+tab);
+        this.$refs.myMain.selectItemFromParent(tab);
+      },
+      removeTabFromChild(tab) {
+        console.log("removeTabFromChild:"+tab);
+        this.$refs.myAside.selectItem(tab);
       }
     }
   };

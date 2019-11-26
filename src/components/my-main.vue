@@ -124,7 +124,7 @@
       this.init();
     },
     methods: {
-      addTabFromParent(tab) {
+      selectItemFromParent(tab) {
         console.log(tab);
         this.editableTabsValue = tab.name;
         let exist = false;
@@ -141,12 +141,14 @@
       removeTab(targetName) {
         let tabs = this.editableTabs;
         let activeName = this.editableTabsValue;
+        let activeTab = null;
         if (activeName === targetName) {
           tabs.forEach((tab, index) => {
             if (tab.name === targetName) {
               let nextTab = tabs[index + 1] || tabs[index - 1];
               if (nextTab) {
                 activeName = nextTab.name;
+                activeTab = nextTab
               }
             }
           });
@@ -154,6 +156,7 @@
 
         this.editableTabsValue = activeName;
         this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+        this.$emit("removeTab", activeTab);
       },
       queryDetail(row) {
         console.log(row);
