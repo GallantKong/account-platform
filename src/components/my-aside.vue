@@ -19,19 +19,23 @@
         menuItems: [{
           title: '收支表',
           name: 'fund_order',
-          path: '/fund_order'
+          path: '/fund_order',
+          componentName: "fundOrder"
         },{
           title: '收支类型表',
           name: 'fund_order_type',
-          path: '/fund_order_type'
+          path: '/fund_order_type',
+          componentName: "fundOrderType"
         },{
           title: '账户信息表',
           name: 'account_info',
-          path: '/account_info'
+          path: '/account_info',
+          componentName: "accountInfo"
         },{
           title: '产品信息表',
           name: 'product_info',
-          path: '/product_info'
+          path: '/product_info',
+          componentName: "productInfo"
         }],
         activeMenuItemName: 'fund_order'
       }
