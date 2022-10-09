@@ -102,6 +102,7 @@
 </template>
 
 <script>
+  import request from '../utils/request'
   export default {
     name: "fund-order",
     data() {
@@ -182,6 +183,13 @@
       searchClick(event) {
         let that = this;
         console.log("searchClick.event:"+event+",selectedOptionValues:"+ that.selectedOptionValues + ",dataRange:"+ that.dateRangeValue);
+        request({
+              method:"get",
+              url:"/fund/order",
+              params:{}
+            }).then((response)=>{
+                      console.log("response "+response);
+                  })
       },
       currentPageChange(currentPage) {
         console.log("currentPage:" + currentPage);
